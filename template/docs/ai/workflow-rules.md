@@ -22,6 +22,21 @@
 - revise o diff;
 - crie commit local quando autorizado pela política do projeto.
 
+## Reconciliação posterior de contribuições
+
+Alterações podem chegar ao projeto sem seguir todo o fluxo documental, especialmente por contribuições humanas externas.
+
+Quando o mantenedor solicitar reconciliação documental de um commit, intervalo, pull request ou diff:
+
+- fixe a referência exata antes da análise;
+- leia o diff e somente a documentação relacionada à área afetada;
+- determine o impacto documental da alteração;
+- atualize apenas documentos realmente afetados;
+- aceite como resultado válido que nenhuma atualização documental seja necessária;
+- não transforme detalhes locais de implementação em regras permanentes sem evidência suficiente;
+- não altere código funcional durante a reconciliação;
+- prefira um commit documental separado para preservar rastreabilidade.
+
 ## Ao concluir a tarefa
 
 - execute validação final;

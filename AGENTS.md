@@ -1,6 +1,6 @@
 # Instruções para agentes
 
-Este repositório documenta o Agent Ready Repository Protocol (ARRP). Trate `protocol/` como a especificação vigente e `template/` como material reutilizável para outros projetos.
+Este repositório documenta o Agent Ready Repository Protocol (ARRP). Trate `protocol/` como a especificação vigente e `template/` como referência documental usada durante migrações.
 
 ## Leitura inicial mínima
 
@@ -27,6 +27,12 @@ Este repositório documenta o Agent Ready Repository Protocol (ARRP). Trate `pro
 - recomendação de modelos: `protocol/model-policy.md`
 - commits: `protocol/commit-policy.md`
 - públicos e linguagem: `protocol/documentation-policy.md`
+- reconciliação documental pós-alteração: `protocol/change-reconciliation.md`
 - migração de repositórios: `migration/`
+
+Portas de entrada operacionais:
+
+- `MIGRATION.md` — aplicar o ARRP a um repositório existente;
+- `DOCUMENT-CHANGE.md` — reconciliar documentação após uma alteração de código já realizada.
 
 Ao concluir, revise links, consistência entre documentos e escopo da alteração.

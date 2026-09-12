@@ -24,6 +24,16 @@ Execute diretamente quando o escopo for localizado e não houver benefício real
 
 Divida quando houver unidades verificáveis com dependências claras. A tarefa continua sendo uma única entrega.
 
+## Reconciliação documental de alteração existente
+
+Quando o usuário solicitar documentação posterior de uma alteração já realizada, trate a referência Git como escopo da tarefa.
+
+A referência pode ser um commit, intervalo de commits, pull request ou diff explícito. Identifique primeiro o que mudou, depois consulte apenas a documentação necessária para avaliar impacto.
+
+O objetivo é sincronizar documentação e implementação, não refazer a alteração. Uma análise pode concluir legitimamente que nenhuma mudança documental é necessária.
+
+Não infira intenção permanente apenas porque um detalhe apareceu no diff. Diferencie fato observado, inferência sustentada e informação não definida.
+
 ## Ambiguidade
 
 Não pergunte por informação que possa ser determinada com segurança pela solicitação, código ou documentação vigente. Pergunte quando uma decisão necessária tiver alternativas materialmente diferentes e nenhuma fonte autoritativa resolver a dúvida.

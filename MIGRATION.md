@@ -21,6 +21,7 @@ Exemplo conceitual:
 │   └── ...
 └── agent-ready-repository-protocol/
     ├── MIGRATION.md
+    ├── DOCUMENT-CHANGE.md
     ├── protocol/
     ├── template/
     ├── migration/
@@ -30,8 +31,6 @@ Exemplo conceitual:
 O ARRP é somente referência. **Todas as alterações da migração devem ocorrer no repositório-alvo.**
 
 ## Comando de entrada
-
-Depois de disponibilizar os dois repositórios ao agente, a instrução pode ser curta:
 
 ```text
 Execute a migração ARRP no projeto-alvo.
@@ -43,25 +42,25 @@ Não altere código funcional.
 
 Ao receber essa instrução, o agente deve:
 
-1. identificar inequivocamente qual pasta/repositório é o ARRP e qual é o projeto-alvo;
+1. identificar inequivocamente qual repositório é o ARRP e qual é o projeto-alvo;
 2. tratar este arquivo como ponto inicial da migração;
 3. ler `migration/migration-prompt.md`;
 4. usar `migration/audit-checklist.md` durante a auditoria;
 5. seguir `migration/migration-plan.md` para ordenar a execução;
-6. consultar `migration/prerequisites.md` para verificar se o repositório pode ser migrado;
-7. usar `template/` como referência para os documentos que poderão ser criados ou reorganizados no projeto-alvo;
-8. consultar `protocol/` somente quando precisar esclarecer contratos, princípios ou decisões do ARRP;
-9. consultar `examples/` apenas quando um exemplo ajudar a resolver uma situação equivalente;
-10. executar a migração documental no projeto-alvo;
-11. não modificar código funcional durante a migração;
-12. criar commits documentais por unidade lógica, quando permitido pela política do projeto-alvo;
-13. apresentar o relatório final definido pelo plano de migração.
+6. consultar `migration/prerequisites.md`;
+7. usar `template/` como referência para os documentos que poderão ser criados ou reorganizados;
+8. garantir que o projeto migrado receba também as regras necessárias para **reconciliação documental posterior de commits, PRs ou diffs já implementados**;
+9. consultar `protocol/change-reconciliation.md` quando precisar esclarecer esse comportamento;
+10. consultar outros arquivos de `protocol/` somente quando necessário;
+11. consultar `examples/` apenas quando um exemplo ajudar;
+12. executar a migração documental no projeto-alvo;
+13. não modificar código funcional durante a migração;
+14. criar commits documentais por unidade lógica, quando permitido;
+15. apresentar o relatório final definido pelo plano de migração.
 
 ## Leitura sob demanda
 
 O repositório completo do ARRP deve estar disponível ao agente, mas isso **não significa ler todos os arquivos antecipadamente**.
-
-A ordem esperada é:
 
 ```text
 MIGRATION.md
@@ -77,13 +76,14 @@ protocol/ para esclarecer regras específicas
 examples/ quando útil
 ```
 
-Isso preserva o princípio de contexto mínimo suficiente do próprio protocolo.
-
 ## Papel de cada área
 
 ```text
 MIGRATION.md
 → ponto de entrada e orquestração
+
+DOCUMENT-CHANGE.md
+→ referência para reconciliação documental posterior de uma alteração já realizada
 
 migration/
 → processo de auditoria e migração
@@ -100,24 +100,22 @@ examples/
 
 ## Limite de escopo
 
-O ARRP é um protocolo de **migração documental de repositórios existentes**.
-
-Portanto, durante sua aplicação:
+Durante a migração:
 
 - não crie um novo projeto de software;
 - não use este repositório como template de aplicação;
 - não faça fork do ARRP para iniciar um produto;
-- não refatore código funcional como parte da migração;
+- não refatore código funcional;
 - não altere APIs, schemas ou dependências para adequar o software ao protocolo;
-- não force todos os arquivos de `template/` a existirem no projeto-alvo;
+- não force todos os arquivos de `template/` a existirem;
 - não copie o próprio repositório ARRP para dentro do projeto migrado.
 
-O resultado esperado é que o **repositório existente** passe a possuir documentação, contratos e roteamento de contexto suficientes para trabalhar com agentes de IA segundo o ARRP.
+O resultado esperado é que o repositório existente passe a possuir documentação, contratos e roteamento de contexto suficientes para trabalhar com agentes de IA segundo o ARRP, inclusive para reconciliar posteriormente contribuições de código feitas fora do workflow documental.
 
 ## Depois da migração
 
 O projeto migrado deve se tornar autônomo. O uso cotidiano passa a ocorrer por meio do `AGENTS.md` e da documentação local criada ou reorganizada durante a migração.
 
-O repositório ARRP não precisa permanecer anexado ao projeto depois que a migração terminar.
+O repositório ARRP não precisa permanecer anexado. Se uma contribuição posterior deixar a documentação para trás, o agente deve usar as regras locais instaladas pela migração; `DOCUMENT-CHANGE.md` permanece como referência de como essa operação deve funcionar.
 
 Se uma versão futura do protocolo precisar ser aplicada, uma nova migração poderá ser executada usando novamente o repositório ARRP completo.

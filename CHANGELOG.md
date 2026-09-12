@@ -15,11 +15,16 @@ Todas as mudanças relevantes do protocolo serão registradas neste arquivo.
 - templates documentais de destino da migração;
 - plano de migração para repositórios existentes;
 - guia prático `USAGE.md`;
-- `MIGRATION.md` como porta de entrada operacional para executar o protocolo.
+- `MIGRATION.md` como porta de entrada operacional para executar o protocolo;
+- `DOCUMENT-CHANGE.md` como referência para reconciliação documental de alterações já implementadas;
+- contrato `protocol/change-reconciliation.md` para tratar commits, PRs e diffs que chegaram sem atualização documental;
+- exemplo de reconciliação documental de contribuição externa.
 
 ### Alterado
 
 - o escopo do ARRP foi definido como exclusivamente migratório;
 - o protocolo não deve ser usado para criar projetos novos nem como base de fork;
-- o fluxo recomendado agora fornece ao agente o projeto-alvo e o repositório ARRP completo, consultado sob demanda durante a migração;
-- `template/` passa a ser descrito explicitamente como referência documental da migração, não como template de aplicação.
+- o fluxo recomendado fornece ao agente o projeto-alvo e o repositório ARRP completo, consultado sob demanda durante a migração;
+- `template/` é referência documental da migração, não template de aplicação;
+- os templates de `task-protocol.md` e `workflow-rules.md` agora incluem reconciliação documental posterior;
+- a migração deve instalar no projeto-alvo capacidade para analisar contribuições de código feitas fora do workflow documental sem exigir alteração funcional.

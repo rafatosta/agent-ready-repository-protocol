@@ -12,4 +12,5 @@ Todas as mudanças relevantes do protocolo serão registradas neste arquivo.
 - política consultiva de modelos;
 - política de commits locais por etapa;
 - separação documental por público;
-- templates de adoção e plano de migração.
+- templates de adoção e plano de migração;
+- guia prático `USAGE.md` explicando como aplicar, migrar e usar o protocolo em projetos reais.

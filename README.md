@@ -1,16 +1,55 @@
 # Agent Ready Repository Protocol
 
-O **Agent Ready Repository Protocol (ARRP)** é um protocolo para organizar repositórios de software de forma que agentes de IA consigam interpretar demandas, localizar apenas o contexto necessário, implementar mudanças e validar o resultado com menos repetição de instruções.
+O **Agent Ready Repository Protocol (ARRP)** é um protocolo de **migração documental para repositórios de software já existentes**. Seu objetivo é reorganizar a documentação e as instruções do projeto para que agentes de IA consigam interpretar demandas, localizar apenas o contexto necessário, implementar mudanças e validar resultados com menos repetição de instruções.
 
 A ideia central é simples:
 
-> O mantenedor descreve **o que deseja fazer**. O repositório ensina ao agente **como trabalhar naquele projeto**.
+> O mantenedor descreve **o que deseja fazer**. O repositório migrado ensina ao agente **como trabalhar naquele projeto**.
 
-O protocolo não tenta substituir engenharia de software, testes, revisão humana ou documentação tradicional. Ele organiza essas informações para que agentes de IA não dependam de prompts extensos repetindo arquitetura, convenções, testes, commits e regras permanentes do projeto.
+## Escopo
+
+O ARRP é aplicado **somente por migração**.
+
+Ele não:
+
+- cria novos projetos;
+- funciona como gerador de aplicações;
+- deve ser usado como base de fork para iniciar um produto;
+- substitui um template de projeto;
+- obriga um software existente a adotar uma arquitetura nova.
+
+O protocolo parte de um repositório que já possui código e o adapta documentalmente para o trabalho com agentes.
+
+A pasta `template/` deste repositório contém **modelos documentais usados durante a migração**. Ela não é um template de aplicação.
+
+## Como executar
+
+Para aplicar o ARRP, o agente deve ter acesso simultâneo ao:
+
+1. repositório existente que será migrado;
+2. repositório completo do ARRP, usado apenas como especificação.
+
+A porta de entrada é:
+
+```text
+MIGRATION.md
+```
+
+Uma forma simples de execução é disponibilizar os dois repositórios como pastas ou ZIPs no mesmo contexto e solicitar:
+
+```text
+Execute a migração ARRP no projeto-alvo.
+Comece por MIGRATION.md do repositório agent-ready-repository-protocol.
+Não altere código funcional.
+```
+
+`MIGRATION.md` orienta o agente a consultar `migration/`, `template/`, `protocol/` e `examples/` conforme a necessidade. O repositório completo fica disponível, mas não deve ser lido integralmente por padrão.
+
+Consulte [USAGE.md](USAGE.md) para o fluxo completo.
 
 ## Por que este protocolo existe?
 
-Em projetos usados com agentes de IA, é comum que cada nova tarefa repita informações como:
+Em projetos usados com agentes de IA, cada nova tarefa pode acabar repetindo informações como:
 
 - arquitetura e fronteiras do sistema;
 - padrões de código;
@@ -24,17 +63,17 @@ Esse modelo tende a produzir prompts longos, difíceis de revisar e caros para p
 
 O ARRP separa essas responsabilidades.
 
-Uma solicitação simples pode continuar simples:
+Depois da migração, uma solicitação pode continuar simples:
 
 ```text
 Junte os três itens do menu em uma única página e organize o conteúdo em três abas.
 ```
 
-O agente deve obter do próprio repositório as informações necessárias sobre componentes, arquitetura, testes, documentação e commits.
+O agente deve obter do próprio repositório migrado as informações necessárias sobre componentes, arquitetura, testes, documentação e commits.
 
-## O que o protocolo organiza?
+## O que a migração organiza?
 
-O protocolo define como um projeto pode documentar:
+O protocolo define como um repositório existente pode passar a documentar:
 
 1. a porta de entrada do agente;
 2. o contexto mínimo do projeto;
@@ -49,51 +88,41 @@ O protocolo define como um projeto pode documentar:
 
 ## Três públicos diferentes
 
-O protocolo trata a documentação conforme o público.
+O protocolo trata a documentação conforme o público:
 
 ```text
-REPOSITÓRIO
+REPOSITÓRIO MIGRADO
 ├── documentação para agentes de IA
 ├── documentação para mantenedores/desenvolvedores
 └── documentação para usuários
 ```
 
-### Agentes de IA
-
-Precisam de instruções operacionais, diretas e estruturadas: regras permanentes, mapa de contexto, arquitetura, domínio, workflow e critérios de validação.
-
-### Mantenedores e desenvolvedores
-
-Precisam de contexto técnico, justificativas, decisões arquiteturais, processo de contribuição, releases e histórico do projeto.
-
-### Usuários
-
-Precisam entender o que o software faz, como instalar, usar e resolver problemas comuns.
+A documentação para agentes deve ser operacional e estruturada. A documentação para mantenedores pode registrar decisões, justificativas e histórico. A documentação para usuários deve permanecer orientada a instalação, uso e resolução de problemas.
 
 O mesmo conhecimento não deve ser copiado integralmente em vários documentos. Quando necessário, um documento aponta para a fonte responsável.
 
-## O README não é a porta de entrada do agente
+## O `AGENTS.md` como porta de entrada
 
-Neste protocolo, o `README.md` é um documento para pessoas.
+No projeto migrado, o `README.md` continua sendo voltado a pessoas.
 
-A porta de entrada do agente é:
+A porta de entrada do agente passa a ser:
 
 ```text
 AGENTS.md
 ```
 
-O `AGENTS.md` deve ser pequeno. Sua função principal é apresentar invariantes e **rotear o agente para a documentação necessária conforme a tarefa**.
+O `AGENTS.md` deve ser pequeno. Sua função principal é apresentar invariantes essenciais e **rotear o agente para a documentação necessária conforme a tarefa**.
 
 Exemplo:
 
 ```text
-UI/UX              → docs/ai/ux ou documentação equivalente
-arquitetura        → docs/ai/architecture.md
-domínio            → docs/ai/domain.md
+UI/UX              → documentação de interface
+arquitetura        → documentação arquitetural
+domínio            → regras e conceitos do domínio
 persistência       → documentação de dados
-regras normativas  → documentação normativa
-testes             → docs/ai/testing.md
-commit              → docs/ai/commit-convention.md
+regras normativas  → fonte normativa do projeto
+testes             → estratégia de testes
+commit             → convenção de commits
 ```
 
 Nem todo projeto terá os mesmos documentos. O importante é tornar explícito onde cada tipo de informação está.
@@ -113,7 +142,7 @@ Tarefa: alterar a disposição de três botões.
 
 Contexto provável:
 AGENTS.md
-+ regras de tarefa
++ regras da tarefa
 + documentação de UI/UX
 + componentes afetados
 + testes relacionados
@@ -121,32 +150,9 @@ AGENTS.md
 
 Não é necessário carregar inicialmente histórico do projeto, documentação de release, banco de dados ou regras de negócio sem relação com a mudança.
 
-## Como uma tarefa é interpretada?
+## Tarefas simples e compostas
 
-O protocolo não exige prompts rígidos.
-
-O usuário pode escrever naturalmente:
-
-```text
-Melhore esta tela para funcionar melhor no celular.
-```
-
-O agente deve estruturar a demanda internamente, quando aplicável, em pontos como:
-
-- objetivo;
-- problema;
-- escopo;
-- restrições;
-- dependências;
-- critérios de conclusão.
-
-Esses campos não precisam ser preenchidos manualmente pelo usuário. O agente deve obtê-los da solicitação, do repositório e da documentação vigente. Se uma decisão indispensável continuar ambígua, ela deve ser levada ao mantenedor.
-
-## Tarefas simples e tarefas compostas
-
-Tarefas pequenas podem ser executadas diretamente.
-
-Tarefas maiores podem ser decompostas em unidades coerentes e verificáveis:
+Tarefas pequenas podem ser executadas diretamente. Tarefas maiores podem ser decompostas em unidades coerentes e verificáveis:
 
 ```text
 [ ] 1. Reorganizar navegação
@@ -156,15 +162,13 @@ Tarefas maiores podem ser decompostas em unidades coerentes e verificáveis:
 [ ] 5. Atualizar documentação
 ```
 
-A tarefa continua sendo uma única entrega. As subtarefas servem para organizar execução, validação e histórico.
+A tarefa continua sendo uma única entrega. As subtarefas organizam execução, validação e histórico.
 
-Por padrão, uma etapa concluída e validada pode gerar um commit local. O agente continua até concluir a tarefa inteira, salvo impedimento real ou estratégia diferente definida pelo usuário.
+Uma etapa concluída e validada pode gerar um commit local. O agente continua até concluir a tarefa inteira, salvo estratégia diferente definida pelo usuário ou impedimento real.
 
 ## Política de modelos
 
-O protocolo pode recomendar capacidades diferentes para etapas diferentes.
-
-Exemplo:
+O protocolo pode recomendar capacidades diferentes para etapas diferentes:
 
 ```text
 Alteração visual localizada    → modelo leve
@@ -174,60 +178,58 @@ Mudança arquitetural complexa  → modelo avançado
 
 Essa política é **consultiva, nunca bloqueante**.
 
-Quando uma tarefa composta exigir capacidades diferentes, o agente deve informar isso no início. O usuário pode escolher entre:
+Quando uma tarefa composta exigir capacidades diferentes, o agente deve informar isso no início. O usuário pode escolher executar toda a tarefa com o modelo atual ou permitir pausas em fronteiras seguras para troca de modelo.
 
-- executar toda a tarefa com o modelo atual; ou
-- permitir pausas em fronteiras seguras para troca de modelo.
+## Projetos com documentação em diferentes estados
 
-Se o modelo atual for superior ao necessário, ele continua sendo válido, embora possa representar maior custo.
+A migração pode encontrar três cenários principais:
+
+```text
+documentação suficiente
+→ reorganizar, deduplicar e validar
+
+documentação parcial ou desatualizada
+→ preservar, reconciliar, complementar e registrar divergências
+
+pouca ou nenhuma documentação
+→ gerar somente um baseline mínimo baseado no estado observável do repositório
+```
+
+Quando a documentação for insuficiente, o agente pode usar estrutura de diretórios, código, configuração, dependências, scripts, testes, CI/CD, rotas, schemas e relações entre módulos como evidência.
+
+O agente deve distinguir informações **observadas**, **inferidas com alta confiança** e **não definidas**. O protocolo não deve inventar intenção, regra de domínio, convenção ou decisão arquitetural sem evidência suficiente.
+
+## Relação entre documentação e código
+
+Durante a migração:
+
+- a documentação pode representar intenção, regras e histórico;
+- código, testes e configuração representam o estado implementado;
+- nenhum dos dois é automaticamente considerado correto quando houver conflito.
+
+Divergências devem ser registradas e classificadas. A migração pode atualizar documentação obsoleta, mas não deve refatorar código funcional para resolver inconsistências.
 
 ## Requisitos mínimos
 
-O protocolo pode ser adotado em projetos novos ou existentes. Para uma migração, recomenda-se:
+O ARRP pressupõe um projeto existente. Para uma migração assistida, recomenda-se:
 
 - repositório versionado com Git;
 - código-fonte identificável;
 - estrutura minimamente compreensível;
-- forma conhecida de executar/buildar o projeto;
-- testes, quando existentes;
-- documentação existente, mesmo incompleta;
+- forma conhecida de executar, buildar ou validar o projeto;
+- testes, quando existirem;
+- documentação existente, mesmo incompleta, quando houver;
 - mantenedor capaz de decidir ambiguidades relevantes.
 
-O projeto não precisa possuir previamente `AGENTS.md`, documentação específica para IA ou arquitetura perfeitamente documentada.
-
-## Como aplicar em um projeto existente?
-
-O fluxo geral é:
-
-```text
-Projeto existente
-      ↓
-auditoria documental
-      ↓
-identificação de regras permanentes
-      ↓
-separação por público
-      ↓
-criação/ajuste do AGENTS.md
-      ↓
-criação da documentação para IA
-      ↓
-remoção de redundâncias
-      ↓
-separação entre estado atual e histórico
-      ↓
-validação de referências
-      ↓
-projeto preparado para agentes
-```
-
-A migração deve ser **documental**. O agente pode ler o código para verificar a realidade do projeto, mas não deve transformar a adoção do protocolo em uma refatoração funcional. Divergências encontradas entre documentação e implementação devem ser registradas para decisão do mantenedor.
+O projeto não precisa possuir previamente `AGENTS.md`, documentação específica para IA ou arquitetura formal.
 
 ## Estrutura deste repositório
 
 ```text
 agent-ready-repository-protocol/
 ├── README.md
+├── USAGE.md
+├── MIGRATION.md
 ├── CHANGELOG.md
 ├── AGENTS.md
 ├── protocol/
@@ -257,23 +259,25 @@ agent-ready-repository-protocol/
     └── documentation-migration.md
 ```
 
-## O que o protocolo não pretende fazer?
+O papel dessas áreas é diferente:
 
-O ARRP não pretende:
+```text
+MIGRATION.md → ponto de entrada
+migration/   → processo de migração
+template/    → modelos documentais de destino
+protocol/    → contratos e princípios
+examples/    → exemplos auxiliares
+```
 
-- criar uma linguagem rígida de prompts;
-- obrigar um modelo específico de IA;
-- fazer o agente ler toda a documentação antes de cada tarefa;
-- substituir testes ou revisão;
-- eliminar decisões humanas em situações ambíguas;
-- autorizar automaticamente push, merge, release ou deploy;
-- impor a mesma quantidade de documentação a todos os projetos.
+## Depois da migração
 
-O protocolo deve ser proporcional ao projeto.
+Quando a migração termina, o projeto deve se tornar autônomo. O trabalho cotidiano passa a usar o `AGENTS.md` e a documentação local do próprio repositório migrado.
+
+O ARRP não precisa permanecer anexado às tarefas futuras. Ele volta a ser necessário apenas se o mantenedor decidir executar uma nova migração para incorporar uma evolução do protocolo.
 
 ## Princípio central
 
-O objetivo final é substituir este fluxo:
+O objetivo final é substituir:
 
 ```text
 prompt detalhado
@@ -291,7 +295,7 @@ por:
 ```text
 solicitação
 → agente interpreta
-→ repositório orienta
+→ repositório migrado orienta
 → contexto necessário é recuperado
 → agente implementa
 → valida
@@ -303,13 +307,13 @@ Quanto melhor o repositório descreve como o trabalho deve ser realizado, menor 
 
 ## Status
 
-O protocolo está em sua primeira versão de definição e será validado progressivamente em projetos reais.
+O protocolo está em sua primeira versão de definição e será validado por migrações em projetos reais.
 
 Os principais pontos de observação serão:
 
 - clareza das instruções;
 - consumo de contexto;
-- qualidade das implementações;
+- qualidade das implementações posteriores;
 - capacidade de decomposição de tarefas;
 - adequação das recomendações de modelo;
 - qualidade dos commits;

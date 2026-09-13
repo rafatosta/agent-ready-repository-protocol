@@ -19,7 +19,8 @@ Todas as mudanças relevantes do protocolo serão registradas neste arquivo.
 - `DOCUMENT-CHANGE.md` como referência para reconciliação documental de alterações já implementadas;
 - contrato `protocol/change-reconciliation.md` para tratar commits, PRs e diffs que chegaram sem atualização documental;
 - exemplo de reconciliação documental de contribuição externa;
-- recomendação operacional de modelo para migrações ARRP e reconciliação documental no ambiente OpenAI/Codex.
+- recomendação operacional de modelo para migrações ARRP e reconciliação documental no ambiente OpenAI/Codex;
+- `protocol/migration-update-policy.md` para remigrações incrementais e idempotentes.
 
 ### Alterado
 
@@ -29,5 +30,8 @@ Todas as mudanças relevantes do protocolo serão registradas neste arquivo.
 - `template/` é referência documental da migração, não template de aplicação;
 - os templates de `task-protocol.md` e `workflow-rules.md` agora incluem reconciliação documental posterior;
 - a migração deve instalar no projeto-alvo capacidade para analisar contribuições de código feitas fora do workflow documental sem exigir alteração funcional;
-- `protocol/model-policy.md` agora mantém classes genéricas estáveis e um mapeamento operacional atualizável para modelos específicos;
-- `MIGRATION.md` recomenda GPT-5.6 Sol com raciocínio Medium como padrão atual e GPT-6 Astra Medium apenas para migrações de complexidade excepcional.
+- `protocol/model-policy.md` mantém classes genéricas estáveis e um mapeamento operacional atualizável para modelos específicos;
+- `MIGRATION.md` recomenda GPT-5.6 Sol com raciocínio Medium como padrão atual e GPT-6 Astra Medium apenas para migrações de complexidade excepcional;
+- uma nova execução do ARRP deve detectar migração anterior e aplicar apenas o delta necessário;
+- migrações passam a ser explicitamente idempotentes: projeto já conforme pode resultar em nenhuma mudança documental;
+- `AGENTS.md` do projeto migrado deve privilegiar invariantes estáveis e rotear estados transitórios para documentação especializada.

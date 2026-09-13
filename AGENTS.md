@@ -28,11 +28,12 @@ Este repositório documenta o Agent Ready Repository Protocol (ARRP). Trate `pro
 - commits: `protocol/commit-policy.md`
 - públicos e linguagem: `protocol/documentation-policy.md`
 - reconciliação documental pós-alteração: `protocol/change-reconciliation.md`
+- atualização incremental e idempotência de migrações: `protocol/migration-update-policy.md`
 - migração de repositórios: `migration/`
 
 Portas de entrada operacionais:
 
-- `MIGRATION.md` — aplicar o ARRP a um repositório existente;
+- `MIGRATION.md` — aplicar ou atualizar o ARRP em um repositório existente;
 - `DOCUMENT-CHANGE.md` — reconciliar documentação após uma alteração de código já realizada.
 
 Ao concluir, revise links, consistência entre documentos e escopo da alteração.

@@ -1,128 +1,93 @@
 # Plano genérico de migração
 
-A migração deve adaptar o processo ao nível de maturidade documental do projeto. O protocolo não presume que todos os repositórios tenham a mesma quantidade ou qualidade de documentação.
+A migração deve adaptar o processo ao estado documental do projeto e também ao histórico de adoção do próprio ARRP.
 
-## Cenários de entrada
+## Etapa 0 — Detectar modo de migração
 
-Antes de iniciar, classifique o projeto em um dos cenários abaixo.
+Antes de reorganizar qualquer documento, verifique se o repositório já foi migrado anteriormente ou já possui responsabilidades equivalentes ao ARRP.
+
+Classifique a execução como:
+
+- **migração inicial** — ainda não existe estrutura compatível;
+- **atualização incremental** — o projeto já foi migrado ou já está parcialmente conforme.
+
+Em atualização incremental, consulte `../protocol/migration-update-policy.md`, identifique o delta em relação ao protocolo vigente e preserve tudo que já estiver correto. Nenhuma mudança é um resultado válido quando não houver delta real.
+
+## Cenários de maturidade documental
 
 ### 1. Documentação suficiente
 
-Quando o projeto já possui documentação útil e razoavelmente atual:
-
-- reorganize o conteúdo conforme o protocolo;
-- consolide fontes responsáveis;
-- remova redundâncias;
-- separe documentação vigente de histórico;
-- valide afirmações relevantes contra código, testes e configuração.
+Reorganize somente quando necessário, consolide fontes responsáveis, remova redundâncias reais, separe vigente de histórico e valide afirmações relevantes contra código, testes e configuração.
 
 ### 2. Documentação parcial, bagunçada ou desatualizada
 
-Quando existe documentação, mas ela é incompleta, redundante, histórica ou contraditória:
-
-- preserve informação válida;
-- use o código atual como evidência do estado implementado;
-- identifique intenção documentada que ainda não corresponde ao código;
-- complemente apenas fatos que possam ser verificados;
-- classifique divergências antes de decidir se a documentação deve ser atualizada ou se a decisão deve ser encaminhada ao mantenedor.
+Preserve informação válida, use o código atual como evidência do estado implementado, identifique intenção ainda não implementada, complemente apenas fatos verificáveis e classifique divergências antes de agir.
 
 ### 3. Pouca ou nenhuma documentação
 
-Quando o repositório não possui documentação suficiente, gere apenas um baseline documental mínimo a partir de evidências observáveis no próprio projeto.
-
-Podem ser usados como fontes:
-
-- estrutura de diretórios;
-- código-fonte;
-- arquivos de configuração;
-- manifesto de dependências;
-- scripts de execução e build;
-- testes;
-- CI/CD;
-- schemas;
-- rotas;
-- convenções consistentemente observáveis.
-
-Não invente regras, intenção arquitetural, convenções ou decisões de domínio que não possam ser comprovadas.
-
-Classifique informações produzidas como:
-
-- **observado** — diretamente comprovado pelo repositório;
-- **inferido com alta confiança** — conclusão sustentada por múltiplas evidências consistentes;
-- **não definido** — depende de decisão do mantenedor.
-
-Lacunas devem ser registradas explicitamente. Completar decisões de governança ou intenção que não existam não é responsabilidade automática da migração.
+Gere apenas um baseline mínimo a partir de estrutura, código, configuração, dependências, scripts, testes, CI/CD, schemas, rotas e convenções consistentemente observáveis. Diferencie observado, inferido com alta confiança e não definido.
 
 ## Etapa 1 — Auditoria
 
-Inventarie a documentação existente, quando houver, e leia código, configuração e testes na medida necessária para verificar o estado real. Classifique o nível de maturidade documental e os arquivos por público, atualidade e responsabilidade.
+Inventarie a documentação e leia código, configuração e testes apenas na medida necessária. Em projetos já migrados, identifique primeiro quais responsabilidades do ARRP já estão satisfeitas.
 
-## Etapa 2 — Reconciliação entre documentação e implementação
+## Etapa 2 — Reconciliação
 
-Trate documentação e código como fontes complementares:
-
-- a documentação pode registrar intenção, regras e histórico;
-- código, testes e configuração demonstram o estado implementado;
-- nenhum deles deve ser considerado automaticamente correto quando houver conflito.
-
-Classifique divergências, quando possível, como:
-
-- documentação obsoleta;
-- implementação divergente da intenção documentada;
-- dívida técnica conhecida;
-- decisão ambígua que exige mantenedor.
-
-Não altere código funcional durante a migração.
+Documentação e implementação são fontes complementares. Classifique divergências como documentação obsoleta, implementação divergente da intenção documentada, dívida técnica conhecida ou decisão ambígua que exige mantenedor. Não altere código funcional.
 
 ## Etapa 3 — Fonte responsável
 
-Para cada regra importante, defina um único documento responsável. Elimine duplicação textual quando referências forem suficientes.
+Para cada regra importante, defina uma única fonte responsável. Evite duplicação textual quando referências forem suficientes.
 
 ## Etapa 4 — Porta de entrada
 
-Crie ou reduza `AGENTS.md` para conter invariantes essenciais e roteamento. Evite transformá-lo em enciclopédia.
+Crie ou reduza `AGENTS.md` para conter apenas invariantes essenciais, estáveis e roteamento. Estados transitórios devem permanecer em documentação especializada, salvo quando sua leitura em toda tarefa for indispensável para evitar erro grave.
 
-## Etapa 5 — Documentação para IA
+## Etapa 5 — Documentação para agentes
 
-Crie somente os documentos necessários ao projeto. Use os arquivos em `template/docs/ai/` como base, removendo seções irrelevantes.
+Crie somente os documentos necessários. Verifique se existem responsabilidades equivalentes para:
 
-Quando documentação prévia não existir, documente apenas o que puder ser sustentado por evidências do repositório e marque lacunas para decisão posterior.
+- contexto e mapa de leitura sob demanda;
+- interpretação e decomposição de tarefas;
+- política consultiva de capacidade/modelo;
+- decisões e divergências, quando aplicável;
+- workflow, validação e commits;
+- reconciliação documental de commits, PRs ou diffs já implementados.
+
+Essas responsabilidades podem estar consolidadas em menos arquivos quando isso for mais claro. Não copie o template mecanicamente.
 
 ## Etapa 6 — Documentação humana
 
-Preserve README, CONTRIBUTING e guias de usuário para pessoas. Mova decisões e históricos extensos para área de mantenedores quando apropriado.
+Preserve README, CONTRIBUTING e guias humanos. Mova histórico extenso para área apropriada quando necessário.
 
 ## Etapa 7 — Estado atual x histórico
 
-Arquive planos concluídos e documentação superada que ainda possua valor. Documentos operacionais devem refletir o estado vigente.
-
-Quando uma arquitetura desejada estiver documentada, mas ainda não implementada, preserve a intenção e registre separadamente o estado atual e a divergência.
+Arquive planos concluídos e documentação superada que ainda possua valor. Preserve intenção ainda não implementada, mas diferencie-a do estado atual.
 
 ## Etapa 8 — Workflow
 
-Defina ou consolide política de tarefa, decomposição, validação, changelog, commits e ações externas somente quando essas regras já existirem ou forem explicitamente decididas pelo mantenedor.
+Consolide política de tarefa, decomposição, validação, changelog, commits e ações externas somente quando essas regras existirem ou forem explicitamente decididas.
 
-Não transforme recomendações do protocolo em políticas fictícias do projeto.
+## Etapa 9 — Validação de idempotência
 
-## Etapa 9 — Validação
-
-Confira links, caminhos, comandos e consistência. Registre divergências entre código e documentação.
+Em atualização incremental, revise o diff final e remova alterações que sejam apenas churn documental. Não renomeie, mova ou reformate conteúdo já conforme sem motivo funcional.
 
 ## Etapa 10 — Commits
 
-Faça commits documentais por unidade lógica. Não altere código funcional durante a migração.
+Faça commits documentais por unidade lógica quando permitido. Não altere código funcional.
 
 ## Resultado
 
 Entregue relatório contendo:
 
-- cenário documental identificado;
-- documentos criados;
-- documentos movidos/arquivados;
+- modo da migração;
+- cenário de maturidade documental;
+- responsabilidades já conformes e preservadas;
+- delta encontrado em relação ao ARRP vigente;
+- documentos criados, alterados, movidos ou arquivados;
 - redundâncias removidas;
-- regras consolidadas;
-- informações extraídas do código;
-- informações inferidas e respectivas evidências;
-- lacunas não definidas pelo projeto;
-- divergências encontradas;
-- pontos que exigem decisão do mantenedor.
+- informações observadas e inferidas;
+- lacunas e divergências;
+- validações executadas;
+- commits produzidos;
+- ou confirmação de que nenhuma mudança documental foi necessária.

@@ -2,33 +2,15 @@
 
 O ARRP é aplicado por migração a repositórios de software já existentes. Ele não cria projetos novos, não deve ser usado como base de fork e não é um gerador de aplicações.
 
-Existem duas operações relacionadas ao protocolo:
+Existem três situações de uso:
 
-1. **migração documental inicial**, que prepara o repositório existente para trabalhar segundo o ARRP;
-2. **reconciliação documental posterior**, usada quando uma alteração de código já foi realizada sem atualizar a documentação correspondente.
+1. **migração documental inicial** — prepara um repositório ainda não adaptado ao ARRP;
+2. **atualização incremental** — reaplica uma versão atual do ARRP a um repositório já migrado;
+3. **reconciliação documental posterior** — documenta uma alteração de código já realizada fora do workflow documental.
 
-## 1. Migração inicial
+## Migração inicial
 
-A porta de entrada é `MIGRATION.md`.
-
-O agente deve ter acesso simultâneo ao projeto-alvo e ao repositório completo `agent-ready-repository-protocol`, usado somente como especificação.
-
-Exemplo de contexto:
-
-```text
-/contexto
-├── projeto-alvo/
-│   └── ...
-└── agent-ready-repository-protocol/
-    ├── MIGRATION.md
-    ├── DOCUMENT-CHANGE.md
-    ├── protocol/
-    ├── template/
-    ├── migration/
-    └── examples/
-```
-
-Solicitação mínima:
+Disponibilize ao agente o projeto-alvo e o repositório completo `agent-ready-repository-protocol` e peça:
 
 ```text
 Execute a migração ARRP no projeto-alvo.
@@ -36,130 +18,82 @@ Comece por MIGRATION.md do repositório agent-ready-repository-protocol.
 Não altere código funcional.
 ```
 
-O agente deve identificar qual repositório é a especificação e qual é o alvo. O ARRP não deve ser modificado durante a migração.
+O ARRP é somente especificação. Todas as mudanças devem ocorrer no projeto-alvo.
 
-### Fluxo
+## Atualização incremental
+
+O mesmo comando pode ser usado novamente quando o ARRP evoluir. O agente deve primeiro detectar que o projeto já foi migrado e então comparar o estado atual com o protocolo vigente.
+
+O resultado esperado é:
 
 ```text
-repositório existente
+projeto já migrado
       ↓
-classificar maturidade documental
+detectar responsabilidades ARRP existentes
       ↓
-auditar documentação atual
+comparar com protocolo atual
       ↓
-inspecionar código, configuração, testes e scripts quando necessário
+identificar delta real
       ↓
-reconciliar documentação e estado implementado
-      ↓
-criar ou reorganizar AGENTS.md e documentação necessária
-      ↓
-separar conteúdo vigente, histórico e públicos
-      ↓
-validar referências e registrar lacunas/divergências
-      ↓
-criar commits documentais por unidade lógica
-      ↓
-entregar relatório da migração
+alterar somente o necessário
 ```
 
-A migração é documental. O código pode ser inspecionado, mas não deve ser refatorado ou alterado funcionalmente como parte da adoção do protocolo.
+Não é esperado recriar `docs/ai/`, mover novamente arquivos corretos, reformatar documentação apenas para coincidir com o template ou refazer toda a migração.
 
-## 2. Projeto com muita documentação
+A regra é:
 
-Quando o projeto já possui documentação extensa, o agente deve preservar conhecimento válido, identificar duplicações e ambiguidades, definir fontes responsáveis, separar documentação atual de histórico e verificar afirmações relevantes contra código, testes e configuração.
+```text
+mesma versão + projeto conforme
+→ nenhuma mudança relevante
 
-A migração não é uma simples cópia para novas pastas.
+versão nova + projeto já migrado
+→ somente delta necessário
+```
 
-## 3. Projeto com pouca ou nenhuma documentação
+Consulte `protocol/migration-update-policy.md` para a regra completa de idempotência e atualização.
 
-Quando a documentação for insuficiente, o agente deve criar somente um baseline mínimo baseado em evidências do próprio repositório.
+## O que a migração verifica
 
-Pode usar estrutura de diretórios, código-fonte, configuração, dependências, scripts, testes, CI/CD, rotas, schemas e relações entre módulos.
+A migração deve manter ou instalar, conforme a realidade do projeto, responsabilidades equivalentes para:
 
-O agente deve diferenciar informações **observadas**, **inferidas com alta confiança** e **não definidas**. Não deve inventar intenção, regras de domínio, convenções ou decisões arquiteturais sem evidência suficiente.
+- `AGENTS.md` pequeno e roteador;
+- contexto sob demanda;
+- interpretação e decomposição de tarefas;
+- recomendação consultiva de capacidade/modelo;
+- decisões e divergências quando aplicável;
+- workflow, testes, commits e autorizações;
+- reconciliação documental pós-alteração;
+- separação entre estado vigente e histórico;
+- separação adequada entre agentes, mantenedores e usuários.
 
-## 4. Papel de `template/`
+Nem toda responsabilidade precisa estar em um arquivo separado.
 
-A pasta `template/` não é um template de aplicação. Ela contém modelos documentais de destino da migração.
+## Estabilidade do `AGENTS.md`
 
-Nem todos os arquivos precisam ser criados. A estrutura deve ser adaptada à realidade do projeto.
+O bootstrap deve conter principalmente invariantes permanentes e informações necessárias em praticamente toda tarefa. Estados transitórios devem ficar em documentação especializada e ser alcançados pelo mapa de contexto.
 
-## 5. Depois da migração
+Exceções só fazem sentido quando uma informação temporária precisa ser lida em toda tarefa para evitar erro grave.
 
-Depois da migração, o projeto passa a operar de forma autônoma. O ponto de entrada para tarefas normais é o `AGENTS.md` do próprio projeto migrado.
+## Projeto com muita documentação
+
+Preserve conhecimento válido, identifique duplicações e ambiguidades, defina fontes responsáveis, separe documentação atual de histórico e confira afirmações relevantes contra código, testes e configuração.
+
+## Projeto com pouca ou nenhuma documentação
+
+Crie somente um baseline mínimo sustentado por evidências do repositório. Diferencie informações observadas, inferidas com alta confiança e não definidas. Não invente intenção, regra de domínio ou decisão arquitetural.
+
+## Alteração de código feita fora do workflow documental
+
+Uma contribuição humana pode corrigir corretamente o código sem atualizar toda a documentação. O mantenedor pode pedir depois uma reconciliação documental usando commit, intervalo, PR ou diff como referência exata.
 
 Exemplo:
 
 ```text
-Reorganize a tela de cadastro para funcionar melhor em dispositivos móveis.
+Documente as alterações introduzidas pelo commit a1b2c3d.
+Use somente esse commit como escopo e não altere código funcional.
 ```
 
-O fluxo cotidiano passa a ser:
-
-```text
-solicitação do usuário
-      ↓
-AGENTS.md
-      ↓
-classificação da tarefa
-      ↓
-contexto necessário sob demanda
-      ↓
-implementação
-      ↓
-validação
-      ↓
-commits locais por unidade lógica
-      ↓
-entrega completa
-```
-
-## 6. Alteração de código feita fora do workflow documental
-
-Uma contribuição humana pode corrigir corretamente o código sem conhecer ou executar todas as obrigações documentais do projeto.
-
-Isso não torna a contribuição inválida. O mantenedor pode solicitar posteriormente uma **reconciliação documental da alteração**.
-
-A porta de entrada de referência no ARRP é:
-
-```text
-DOCUMENT-CHANGE.md
-```
-
-No projeto já migrado, a operação deve usar a referência Git exata da mudança e a documentação local do próprio projeto.
-
-Exemplos:
-
-```text
-Analise o último commit de código e reconcilie a documentação do projeto com essa alteração. Não altere código funcional.
-```
-
-```text
-Documente as alterações introduzidas pelo commit a1b2c3d. Use somente esse commit como escopo.
-```
-
-```text
-Analise este pull request e atualize apenas a documentação necessária para refletir o comportamento introduzido.
-```
-
-O agente deve comparar o diff com a documentação vigente e decidir se existe impacto documental. **Nenhuma atualização documental necessária** é um resultado válido.
-
-O agente não deve transformar detalhes localizados do código em regras permanentes sem evidência suficiente.
-
-Quando houver atualização, prefira um commit documental separado da contribuição de código para preservar autoria e rastreabilidade.
-
-## 7. Primeiro teste recomendado
-
-```text
-1. deixe o projeto-alvo em uma branch limpa ou estado Git conhecido;
-2. disponibilize ao agente o projeto-alvo e o repositório ARRP completo;
-3. peça: "Execute a migração ARRP no projeto-alvo. Comece por MIGRATION.md.";
-4. revise o relatório e os commits documentais;
-5. execute algumas tarefas reais usando solicitações curtas;
-6. escolha um commit ou PR de código já existente;
-7. solicite a reconciliação documental dessa referência;
-8. verifique se o agente atualiza somente o necessário e aceita corretamente casos sem impacto documental.
-```
+Nenhuma atualização documental necessária é um resultado válido.
 
 ## Resumo
 
@@ -169,11 +103,15 @@ projeto existente + ARRP completo
 → MIGRATION.md
 → projeto autônomo
 
-MANUTENÇÃO POSTERIOR
+ATUALIZAÇÃO DO ARRP
+projeto já migrado + ARRP atual
+→ detectar conformidade existente
+→ aplicar somente o delta
+
+RECONCILIAÇÃO POSTERIOR
 commit/PR/diff existente
 → documentação local do projeto
-→ reconciliação de impacto documental
-→ commit documental, se necessário
+→ atualizar somente impacto documental
 ```
 
-O ARRP nunca é usado para criar um projeto novo. Sua adoção ocorre por migração de um repositório existente; a reconciliação posterior é uma capacidade documental instalada no projeto migrado.
+O ARRP nunca é usado para criar um projeto novo.

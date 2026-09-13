@@ -4,6 +4,23 @@ Este arquivo é a **porta de entrada operacional** do Agent Ready Repository Pro
 
 O ARRP existe exclusivamente para **migrar repositórios de software já existentes** para uma estrutura documental preparada para agentes de IA. Ele não é um template para iniciar projetos, não deve ser usado como base de fork e não cria aplicações novas.
 
+## Modelo recomendado
+
+Antes de iniciar uma migração completa, consulte `protocol/model-policy.md`.
+
+No ambiente OpenAI/Codex, a recomendação operacional atual é:
+
+```text
+GPT-5.6 Sol
+Raciocínio: Medium
+```
+
+Esse é o padrão recomendado para a maioria das migrações ARRP.
+
+Use GPT-6 Astra com raciocínio Medium apenas quando a auditoria inicial indicar complexidade excepcional, como documentação muito conflitante, arquitetura difícil de reconstruir, regras normativas complexas ou forte ambiguidade entre documentação e implementação.
+
+A recomendação é consultiva e não bloqueia a execução com outro modelo.
+
 ## O que fornecer ao agente
 
 O agente precisa ter acesso simultâneo a dois conjuntos de arquivos:
